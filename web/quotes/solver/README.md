@@ -5,10 +5,10 @@
 Based on the challenge description, there are no suspicious clues. Let's see that.
 
 ## How to solve?
-Terdapat 2 yang dapat dilakukan oleh user yaitu pada textarea about dan upload file stickers. 
+Terdapat 3 yang dapat dilakukan oleh user yaitu pada username, textarea untuk about dan upload file stickers. 
 ![img1](img/img1.png)
 
-Pada app.py diketahui bahwa web ini menggunakan security csp tetapi ada script-src yang masih terdapat dari luar web salah satunya domain google.com. Pada halaman quotes `Textarea` tidak dapat di lakukan xss injection karena ada `dompurify` yang melindungi dengan versi terbaru, sedangkan pada `upload file stickers` hanya ada `sanitasi html entites` pada tag < dan > dan bahkan ada clue decodenya ketika kita justru menggunakan &lt; dan &gt; diawal payload, 
+Pada app.py diketahui bahwa web ini menggunakan security csp tetapi ada script-src yang masih terdapat dari luar web salah satunya domain google.com. Pada halaman quotes `username`, `about` tidak dapat di lakukan xss injection karena ada `dompurify` yang melindungi dengan versi terbaru, sedangkan pada `upload file stickers` hanya ada `sanitasi html entites` pada tag < dan > dan bahkan ada clue decodenya ketika kita justru menggunakan &lt; dan &gt; diawal payload, 
 ![img2](img/img2.png)
 ![img3](img/img3.png)
 
@@ -25,7 +25,7 @@ oleh karenanya setelah mendapatkan url `randomname dari svg file yang kita uploa
 
 kesimpulan:
 ```
-1. ada 2 inputan user : textarea (lock with dompurify) & file upload (lock with html entities)
+1. ada 3 inputan user : username dan about (lock with dompurify) & file upload (lock with html entities)
 2. func yang dijalankan pada saat click share admin akan di set url default yang salah. tinggal kita timpa dengan url baru (file svg) yang kita dapatkan saat click share.
 3. func kita ambil formatnya dari file quotes.eta tinggal ubah url
 4. enter di console lalu klik share admin refresh/reload halaman 1-2 kali setelah itu flag muncul
@@ -34,7 +34,7 @@ kesimpulan:
 Penjelasan payload:
 Harus menggunakan callback dari csp yang dapat dibypass yaitu dari domain google.com, saya pakai accounts.google.com. diarahkan ke api/quotes untuk dapatkan password berupa flag. lalu menggunakan const ADMIN_PASSWORD = data.data.password; menyimpan password admin, lalu kirimkan dengan register/login dgn username baru x/x lalu isi pada about di api/quotes di hal baru dengan password admin yang tadi disimpan.
 
-payload
+
 ```
 KMIPNVIPNJ{yEAH_XSS_w1th_CSP_4nd_html_entities_BYp455}
 ```

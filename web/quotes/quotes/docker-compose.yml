@@ -1,0 +1,20 @@
+version: '3'
+services:
+  web:
+    build: ./web
+    restart: always
+    environment:
+      - BOT_HOST=bot
+      - BOT_PORT=6565
+      - HOST=web:8687
+    ports:
+      - 7132:8687
+  bot:
+    build: bot
+    environment:
+      - FLAG=KMIPNVIPNJ{yEAH_XSS_w1th_CSP_4nd_html_entities_BYp455}
+      - SITE=http://web:8687
+      - ADMIN_USERNAME=adminUname
+      - REPORT_HOST=web
+      - BOT_PORT=6565
+    restart: always

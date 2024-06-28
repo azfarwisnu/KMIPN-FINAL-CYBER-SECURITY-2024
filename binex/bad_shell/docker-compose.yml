@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  pwn__bad_shell:
+    build: .
+    container_name: pwn__bad_shell
+    restart: on-failure
+    expose:
+      - '9999'
+    ports:
+      - "40802:9999"

@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <seccomp.h>
+#include <string.h>
+#include <sys/mman.h>
+
+// gcc chall.c -o chall_improved -m64 -no-pie -fno-stack-protector -lseccomp -g -O0 -Wl,-z,relro,-z,now
+void init_and_seccomp() {
+    setvbuf(stdin, 0, 2, 0);
+    setvbuf(stdout, 0, 2, 0);
+    scmp_filter_ctx ctx = seccomp_init(SCMP_ACT_ALLOW);
+    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(execve),0);
+    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(ptrace),0);
+    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(execveat),0);
+    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(mprotect),0);
+    seccomp_load(ctx);
+}
+
+void main() {
+    init_and_seccomp();
+    char *first_input;
+    char second_input[0x18];
+    first_input = calloc(1,0x2000);
+    if (first_input == NULL) {
+        printf("[!] Unintended ERROR happened!\n");
+        exit(-1);
+    }
+    printf("\n\t\t------------------------------------\n");
+    printf("\n\t\tDamn Vulnerable Feedback Application\n");
+    printf("\n\t\t------------------------------------\n");
+    printf("\t[!] ALERT: Some data has been leaked [%p]!\n", first_input);
+    printf("\t[*] Restoring System\n");
+    printf("\t[#] Hi There! We need your advice to improve our challenge\n");
+    printf("\t[?] Advice\t: ");
+    fgets(first_input,0x2000,stdin);
+    printf("\t[?] Team Name\t: ");
+    fgets(second_input,0x30,stdin);
+    printf("\nThank you. Good Luck Have Flag!\n");
+    
+    memset(first_input,0,malloc_usable_size(first_input));
+    free(first_input);
+    close(0);
+    close(1);
+    close(2);
+}

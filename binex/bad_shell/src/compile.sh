@@ -1,0 +1,1 @@
+gcc chall.c -o chall -m64 -lseccomp

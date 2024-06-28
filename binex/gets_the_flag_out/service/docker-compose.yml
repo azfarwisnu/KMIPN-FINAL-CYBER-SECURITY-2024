@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  pwn__gets_the_flag_out:
+    build: .
+    container_name: pwn__gets_the_flag_out
+    restart: on-failure
+    expose:
+      - '9999'
+    ports:
+      - "40801:9999"

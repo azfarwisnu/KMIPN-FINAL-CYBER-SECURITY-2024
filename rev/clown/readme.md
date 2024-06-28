@@ -4,6 +4,8 @@ Description :
 ```
 An instance on another planet has just been cyber attacked, help them recover their imporant data.
 
+*Highly recommended to create an empty directory when debugging it
+
 Author: Vaints
 ```
 

@@ -2,7 +2,7 @@
 
 Description :
 ```
-An instance on another planet has just been cyber attacked, help them recover their critical data.
+An instance on another planet has just been cyber attacked, help them recover their imporant data.
 
 Author: Vaints
 ```

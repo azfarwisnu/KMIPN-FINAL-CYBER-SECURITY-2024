@@ -10,6 +10,10 @@
 #include <sys/mman.h>
 
 // gcc chall.c -o chall_improved -m64 -no-pie -fno-stack-protector -lseccomp -g -O0 -Wl,-z,relro,-z,now
+// patchelf --replace-needed libc.so.6 libc-2.31.so chall
+// patchelf --set-interpreter ld-2.31.so chall
+// patchelf --set-rpath . chall
+
 void init_and_seccomp() {
     setvbuf(stdin, 0, 2, 0);
     setvbuf(stdout, 0, 2, 0);

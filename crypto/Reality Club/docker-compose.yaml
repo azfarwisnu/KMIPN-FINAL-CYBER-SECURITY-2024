@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  rev:
+    build: .
+    expose:
+      - '9999'
+    ports:
+      - '4423:9999'

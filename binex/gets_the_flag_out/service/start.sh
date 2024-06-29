@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /home/ctf
-./chall
+timeout 60 ./chall

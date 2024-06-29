@@ -18,6 +18,7 @@ void init_and_seccomp() {
     seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(ptrace),0);
     seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(execveat),0);
     seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(mprotect),0);
+    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(mmap),0);
     seccomp_load(ctx);
 }
 

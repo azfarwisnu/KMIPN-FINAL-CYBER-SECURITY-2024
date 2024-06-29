@@ -9,8 +9,10 @@ Terdapat 3 yang dapat dilakukan oleh user yaitu pada username, textarea untuk ab
 ![img1](img/img1.png)
 
 Pada app.py diketahui bahwa web ini menggunakan security csp tetapi ada script-src yang masih terdapat dari luar web salah satunya domain google.com. Pada halaman quotes `username`, `about` tidak dapat di lakukan xss injection karena ada `dompurify` yang melindungi dengan versi terbaru, sedangkan pada `upload file stickers` hanya ada `sanitasi html entites` pada tag < dan > dan bahkan ada clue decodenya ketika kita justru menggunakan &lt; dan &gt; diawal payload, 
+![img7](img/img7.png)
 ![img2](img/img2.png)
 ![img3](img/img3.png)
+
 
 Lalu tidak ada sanitasi dan akan langsung dieksekusi oleh bot menggunakna module Puppeteer untuk mengontrol Chrome atau Chromium untuk tugas-tugas otomatisasi web. 
 ![img4](img/img4.png)

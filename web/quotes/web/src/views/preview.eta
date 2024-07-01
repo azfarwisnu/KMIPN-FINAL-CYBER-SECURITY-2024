@@ -1,0 +1,161 @@
+<<<<<<< HEAD:web/quotes/quotes/web/src/views/share.eta
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Share</title>
+   <%~ includeFile('partial/head', it) %>
+   <style>
+       body {
+         background-repeat: no-repeat;
+           display: flex;
+           justify-content: center;
+           background-image: url('stickers/background.png');
+           background-size: cover;
+           margin: 0;
+           align-items: center;
+           height: 100vh;
+       }
+       .container {
+           text-align: center;
+           background: rgba(255, 255, 255, 0.8);
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       }
+       h1 {
+           font-family: 'Arial', sans-serif;
+           font-size: 2.5rem;
+           font-weight: bold;
+           color: #333;
+           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+           margin-bottom: 1rem;
+       }
+       .circular-sticker {
+           border-radius: 50%;
+           width: 15rem;
+           height: 15rem;
+           object-fit: cover;
+       }
+       #sticker-container {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           margin-top: 2rem;
+       }
+   </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-3">Edit quotes</h1>
+        <div class="row mb-5 justify-content-center">
+            <div class="col-sm-9">
+                <h3 class="mb-3 mt-3">Kata katanya hari ini bang <span id="username">User</span></h3>
+                <div id="about"></div>
+            </div>
+        </div>
+        <div id="sticker-container">
+            <h3 class="mb-3 mt-3">Sticker</h3>
+            <img src="stickers/defaultsticker.png" class="img-fluid circular-sticker" id="sticker">
+        </div>
+
+        <script nonce="<%= it.nonce %>">
+            fetch(`/api/share${location.search}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        username.innerHTML = DOMPurify.sanitize(data.data.username)
+                        about.innerHTML = DOMPurify.sanitize(data.data.about)
+                        sticker.src = data.data.sticker
+                    } else {
+                        alert(data.message)
+                    }
+                })
+        </script>
+
+    </div>
+</body>
+
+</html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Preview</title>
+   <%~ includeFile('dess/head', it) %>
+   <style>
+       body {
+         background-repeat: no-repeat;
+           display: flex;
+           justify-content: center;
+           background-image: url('stickers/background.png');
+           background-size: cover;
+           margin: 0;
+           align-items: center;
+           height: 100vh;
+       }
+       .container {
+           text-align: center;
+           background: rgba(255, 255, 255, 0.8);
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       }
+       h1 {
+           font-family: 'Arial', sans-serif;
+           font-size: 2.5rem;
+           font-weight: bold;
+           color: #333;
+           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+           margin-bottom: 1rem;
+       }
+       .circular-sticker {
+           border-radius: 50%;
+           width: 15rem;
+           height: 15rem;
+           object-fit: cover;
+       }
+       #sticker-container {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           margin-top: 2rem;
+       }
+   </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-3">Edit quotes</h1>
+        <div class="row mb-5 justify-content-center">
+            <div class="col-sm-9">
+                <h3 class="mb-3 mt-3">Kata katanya hari ini bang <span id="username">User</span></h3>
+                <div id="about"></div>
+            </div>
+        </div>
+        <div id="sticker-container">
+            <h3 class="mb-3 mt-3">Sticker</h3>
+            <img src="stickers/defaultsticker.png" class="img-fluid circular-sticker" id="sticker">
+        </div>
+
+        <script nonce="<%= it.nonce %>">
+            fetch(`/api/preview${location.search}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        username.innerHTML = DOMPurify.sanitize(data.data.username)
+                        about.innerHTML = DOMPurify.sanitize(data.data.about)
+                        sticker.src = data.data.sticker
+                    } else {
+                        alert(data.message)
+                    }
+                })
+        </script>
+
+    </div>
+</body>
+
+</html>
+>>>>>>> c62a79e9bb8a7cefc0fcb1f2322de85d4a1d3839:web/quotes/web/src/views/preview.eta

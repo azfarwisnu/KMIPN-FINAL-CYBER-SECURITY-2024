@@ -2,10 +2,15 @@ version: '3'
 
 services:
   pwn__bad_shell:
-    build: .
+    image: pwn__bad_shell
     container_name: pwn__bad_shell
-    restart: on-failure
-    expose:
-      - '9999'
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "40802:9999"
+    networks:
+      - pwn__bad_shell_network
+networks:
+  pwn__bad_shell_network:
+    driver: bridge

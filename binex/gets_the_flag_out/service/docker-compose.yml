@@ -2,10 +2,15 @@ version: '3'
 
 services:
   pwn__gets_the_flag_out:
-    build: .
+    image: pwn__gets_the_flag_out
     container_name: pwn__gets_the_flag_out
-    restart: on-failure
-    expose:
-      - '9999'
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "40801:9999"
+    networks:
+      - pwn__gets_the_flag_out_network
+networks:
+  pwn__gets_the_flag_out_network:
+    driver: bridge

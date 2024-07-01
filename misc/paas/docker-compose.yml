@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  misc__paas:
+    image: misc__paas
+    container_name: misc__paas
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "31337:9999"
+      - "50000-50100:50000-50100"
+    networks:
+      - misc__paas_network
+networks:
+  misc__paas_network:
+    driver: bridge

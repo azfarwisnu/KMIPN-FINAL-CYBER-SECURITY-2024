@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  pwn__gets_the_flag_out:
+  crypto__pal_signer:
     image: crypto__pal_signer
     container_name: crypto__pal_signer
     build:

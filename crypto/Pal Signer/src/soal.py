@@ -23,7 +23,7 @@ while True:
         print("Enter your messsage (hex)")
         inp=input("> ")
         inp=int(inp,16)
-        if (inp>0 and inp<cipher.n**2):
+        if (inp>0 and inp<cipher.n**2) and (long_to_bytes(inp)!=b"bwang flagnya dong"):
             print('your signature :','{0:x}'.format(cipher.encrypt(inp)))
         else:
             print("Okay... hengker")

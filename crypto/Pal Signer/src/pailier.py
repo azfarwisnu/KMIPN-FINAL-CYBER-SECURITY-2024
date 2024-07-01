@@ -16,15 +16,17 @@ class pailier:
 
     def L(self,val):
         return (val-1)//self.n
+        
     def pubkey(self):
         return (self.n,self.g)
+
     def encrypt(self,msg):
         r=random.randrange(0,self.n-1)
         gm=pow(self.g,msg,self.n**2)
         rn=pow(r,self.n,self.n**2)
         ct=(gm*rn)%(self.n**2)
         return ct
-        
+
     def decrypt(self,ct):
         m=self.L(pow(ct,self.phi,self.n**2))%self.n
         m=(m*self.miu)%self.n

@@ -8,7 +8,7 @@ RUN python3 -m pip install pycryptodome
 RUN useradd -m ctf
 WORKDIR /home/ctf
 
-COPY ctf.xinetd /etc/xinetd.d/ctf
+COPY start.sh /start.sh
 COPY src/soal.py /home/ctf/
 COPY src/secret.py /home/ctf/
 COPY src/pailier.py /home/ctf/

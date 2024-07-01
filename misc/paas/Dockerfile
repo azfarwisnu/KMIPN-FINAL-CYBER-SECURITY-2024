@@ -14,9 +14,6 @@ RUN chown root:root /flag.txt
 RUN chmod -R 555 /app
 RUN chmod 555 /flag.txt
 
-EXPOSE 9999
-EXPOSE 30000-39999
-
 RUN useradd ctf
 USER ctf
 

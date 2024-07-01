@@ -4,7 +4,7 @@ Description :
 ```
 Python as a Service
 
-nc 157.173.204.136 40802
+nc 157.173.204.136 31337
 
 Author: Vaints
 ```

@@ -9,3 +9,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "40801:9999"
+    networks:
+      - pwn__gets_the_flag_out_network
+networks:
+  pwn__gets_the_flag_out_network:
+    driver: bridge

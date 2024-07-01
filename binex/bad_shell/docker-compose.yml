@@ -9,3 +9,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "40802:9999"
+    networks:
+      - pwn__bad_shell_network
+networks:
+  pwn__bad_shell_network:
+    driver: bridge

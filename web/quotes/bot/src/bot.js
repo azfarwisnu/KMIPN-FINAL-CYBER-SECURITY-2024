@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer")
 const crypto = require("crypto")
 
-const COOKIE = process.env.COOKIE //|| 'eyJ6IkpXVCJ9eyJzdWIiOiIxMjM0NTmFF0IjoxNTE2MjM5MDIyfQfTLzlcxdQtXWTitKMfuBMM5KfOmw'
+const COOKIE = process.env.COOKIE
 const UsernameAdmin = process.env.UsernameAdmin || 'adminUname'
 const CookieAdmin = COOKIE
 const SITE = process.env.SITE || 'http://localhost:8687'

@@ -7,14 +7,18 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY src/chall.py .
-COPY src/flag.txt /flag.txt
+COPY src/flag.txt /
+COPY src/start.sh /
 
 RUN chown -R root:root /app
-RUN chown root:root /flag.txt
 RUN chmod -R 555 /app
+RUN chown root:root /flag.txt
 RUN chmod 555 /flag.txt
+
+RUN chown root:root /start.sh
+RUN chmod 555 /start.sh
 
 RUN useradd ctf
 USER ctf
 
-CMD ["socat", "TCP-LISTEN:9999,reuseaddr,fork", "EXEC:python2 /app/chall.py"]
+CMD ["socat", "TCP-LISTEN:9999,reuseaddr,fork", "EXEC:/start.sh"]

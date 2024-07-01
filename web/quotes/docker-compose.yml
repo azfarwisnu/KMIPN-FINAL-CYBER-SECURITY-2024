@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    build: ./web
+    restart: always
+    environment:
+      - BOT_HOST=bot
+      - BOT_PORT=6565
+      - HOST=web:8687
+      - COOKIE=eyJ6IkpXVCJ9eyJzdWIiOiIxMjM0NTmFF0IjoxNTE2MjM5MDIyfQfTLzlcxdQtXWTitKMfuBMM5KfOmw
+      - FLAG=KMIPNVIPNJ{yEAH_XSS_w1th_CSP_4nd_html_entities_BYp455}
+    ports:
+      - 7132:8687
+  bot:
+    build: bot
+    environment:
+      - COOKIE=eyJ6IkpXVCJ9eyJzdWIiOiIxMjM0NTmFF0IjoxNTE2MjM5MDIyfQfTLzlcxdQtXWTitKMfuBMM5KfOmw
+      - SITE=http://web:8687
+      - UsernameAdmin=adminUname
+      - REPORT_HOST=web
+      - BOT_PORT=6565
+    restart: always

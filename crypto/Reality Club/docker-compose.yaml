@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  rev:
+  crypto:
     build: .
     expose:
       - '9999'

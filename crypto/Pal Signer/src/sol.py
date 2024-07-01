@@ -10,6 +10,7 @@ mungkin=[charset for _ in range(55)]
 kirim=[8577627131335996613063540869197101574090243,100]
 for _ in range(5):
     f=process(['python3','soal.py'])
+    # f=remote('157.173.204.136','40805')
     target='6277616e6720666c61676e796120646f6e67'
     sig_asli=1
     for i in range(2):
@@ -18,10 +19,9 @@ for _ in range(5):
         sig=f.readline().strip(b"your signature : ").decode().rstrip()
         sig_asli=int(sig,16)*sig_asli
     sig_asli="{0:x}".format(sig_asli)
-    print(sig_asli)
     f.sendlineafter(b'> ',b'2')
     f.sendlineafter(b'> ',sig_asli.encode())
-    print(f.readline())
+    f.readline()
     arr=f.readline().strip(b'[')[:-2].decode().split(', ')
     arr=[int(i) for i in arr]
     for i in range(len(arr)):

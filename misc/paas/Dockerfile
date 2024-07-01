@@ -1,7 +1,7 @@
 # Use an official Python 2 image from the Docker Hub
 FROM ubuntu:20.04
 
-RUN apt-get update && apt-get install -y socat
+RUN apt-get update && apt-get install -y socat python2
 
 RUN mkdir /app
 WORKDIR /app

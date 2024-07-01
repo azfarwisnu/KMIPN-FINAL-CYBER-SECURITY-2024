@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "40801:9999"
+      - "40805:9999"
     networks:
       - crypto__pal_signer_network
 networks:

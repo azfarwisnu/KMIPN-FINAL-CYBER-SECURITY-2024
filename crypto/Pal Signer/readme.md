@@ -1,15 +1,14 @@
-# SHASHA
+# Pal Signer
 
 Description :
 ```
-SHA SHA SHAKE SHAKE, SHA SHA MARSHA, SHA SHA SHA SHA
 
-tunjukkan SHA SHA mu dan dapatkan hadiahnya!
+Teknik tanda tangan terbaik yang pernah ada!
 
 Author: AnYujin
 ```
 
-Attachment	: soal.py
+Attachment	: soal.py,paillier.py
 
 Flag     	: `KMIPNVIPNJ{B4g1_b4gi_S3Mb4k0_gr4T15!!!!_Sh4_Sh4_M4rSha}`
 

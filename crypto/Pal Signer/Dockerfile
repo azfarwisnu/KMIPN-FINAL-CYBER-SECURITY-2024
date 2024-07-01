@@ -11,6 +11,8 @@ WORKDIR /home/ctf
 COPY ctf.xinetd /etc/xinetd.d/ctf
 COPY src/soal.py /home/ctf/
 COPY src/secret.py /home/ctf/
+COPY src/pailier.py /home/ctf/
+
 
 RUN chown root:ctf /home/ctf
 RUN chmod -R 755 /home/ctf

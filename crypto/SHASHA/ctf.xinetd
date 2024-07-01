@@ -9,7 +9,7 @@ service ctf
 	port = 9999
 	bind = 0.0.0.0
 	server = /usr/local/bin/python
-	server_args = /home/ctf/server.py
+	server_args = /home/ctf/soal.py
 	banner_fail = /etc/banner_fail
 	#safety options
 	per_source = 10 # the maximum instances of this service per source IP address

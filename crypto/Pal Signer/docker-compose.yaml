@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  crypto:
+    build: .
+    expose:
+      - '9999'
+    ports:
+      - '42325:9999'

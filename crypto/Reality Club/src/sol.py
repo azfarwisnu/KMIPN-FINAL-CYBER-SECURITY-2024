@@ -2,7 +2,7 @@ from pwn import *
 from Crypto.Util.number import *
 
 # f=process(['python3','soal.py'])
-f=remote('182.3.51.136','4423')
+f=remote('157.173.204.136','4423')
 payload=b'a'*100
 f.sendlineafter(b'> ',b'1')
 f.sendlineafter(b'> ',payload)

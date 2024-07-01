@@ -1,9 +1,16 @@
 version: '3'
 
 services:
-  crypto:
-    build: .
-    expose:
-      - '9999'
+  pwn__gets_the_flag_out:
+    image: crypto__pal_signer
+    container_name: crypto__pal_signer
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '40805:9999'
+      - "40801:9999"
+    networks:
+      - crypto__pal_signer_network
+networks:
+  crypto__pal_signer_network:
+    driver: bridge

@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
-RUN apt-get update -y && apt-get install -y \
-    xinetd
+RUN apt update -y && apt install -y \
+    socat
 
 RUN python3 -m pip install pycryptodome
 
@@ -14,11 +14,12 @@ COPY src/secret.py /home/ctf/
 COPY src/pailier.py /home/ctf/
 
 
-RUN chown root:ctf /home/ctf
-RUN chmod -R 755 /home/ctf
+RUN chown -R root:root /home/ctf
+RUN chmod -R 555 /home/ctf
+RUN chmod 555 /start.sh
 
 USER ctf
 
 EXPOSE 9999
 
-CMD ["/usr/sbin/xinetd","-dontfork"]
+CMD ["socat", "TCP-LISTEN:9999,reuseaddr,fork", "EXEC:/start.sh"]

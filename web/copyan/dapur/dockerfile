@@ -1,0 +1,53 @@
+FROM ubuntu:22.04
+
+# Set environment variables
+ENV NODE_VERSION 14
+
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y curl gnupg netcat && \
+    curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create a new user
+RUN useradd -ms /bin/bash nodeuser
+
+# Set the working directory
+WORKDIR /app
+
+# Switch to the root user to create directories
+USER root
+
+# Create the necessary directories and set ownership
+RUN mkdir -p /app/node_modules && chown -R nodeuser:nodeuser /app
+
+# Switch back to the nodeuser
+USER nodeuser
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the application code
+COPY index.js .
+
+# Copy flag.txt with restricted permissions
+COPY --chown=nodeuser:nodeuser flag.txt /app/flag.txt
+RUN chmod 444 /app/flag.txt
+
+# Set read-only permissions on all files under /app
+USER root
+RUN chown -R nodeuser:nodeuser /app && \
+    find /app -type f -exec chmod 444 {} + && \
+    find /app -type d -exec chmod 555 {} +
+USER nodeuser
+
+# Expose the port on which your Node.js app will run
+EXPOSE 3300
+
+# Set the entry point to start your Node.js application
+CMD ["node", "index.js"]

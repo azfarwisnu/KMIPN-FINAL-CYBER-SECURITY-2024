@@ -1,0 +1,26 @@
+{
+  "name": "web1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "get-pixels": "^3.3.3",
+    "http": "^0.0.1-security",
+    "jimp": "^0.22.12",
+    "jsqr": "^1.4.0",
+    "multer": "^1.4.5-lts.1",
+    "pug": "^3.0.2",
+    "qr-image": "^3.2.0",
+    "qrcode": "^1.5.3",
+    "qrcode-reader": "^1.0.4",
+    "sharp": "^0.33.3"
+  }
+}

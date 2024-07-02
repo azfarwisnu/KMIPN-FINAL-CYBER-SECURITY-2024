@@ -7,5 +7,41 @@
 </head>
 <body>
     <h1>Flag: {{FLAG}}</h1>
+    <!-- 
+    pub.py 
+    
+    from Crypto.PublicKey import RSA
+    key = RSA.generate(2048)
+    priv_key = key.export_key()
+    with open('private.pem', 'wb') as f:
+        f.write(priv_key)
+    public_key = key.publickey().export_key()
+    with open('public.pem', 'wb') as f:
+        f.write(public_key)
+
+    e.py
+
+    from Crypto.PublicKey import RSA
+    from Crypto.Cipher import PKCS1_OAEP
+    import base64
+
+    def encrRsa(input_text, public_key_path):
+        with open(public_key_path, 'rb') as f:
+            public_key = RSA.import_key(f.read())
+
+        cRsa = PKCS1_OAEP.new(public_key)
+        enc_Bytes = cRsa.encrypt(input_text.encode())
+        enc_B64 = base64.b64encode(enc_Bytes).decode('utf-8')
+        return enc_B64
+
+    if __name__ == "__main__":
+        input_text = "REDACTED"
+        public_key_path = "public.pem"
+        enc = encrRsa(input_text, public_key_path)
+        print(enc) 
+
+        W5D9tTO9OhnzawE89rL7x40AkuZfmF4Z5jv+xvu6SMbazzGT+XZT/AXBtLqIx9uqBWsRbeJYELvdI49FAwIiluhWcEXGJTgVorcHOyde4mZoies7C6Zs9b23oKKcIvq73qJEwQM2WxYOFLhb0UC27XJ0nR5BZSZNH+Avy8w6+myc3+FyaALA7Bz+1cpvVjkej/lwuiLmVDIIy2gihNtqw+fg+/pzpKnQeNEXRePQc+tDk49NFOL9xqpBaOHu+PeUSbo3HJxMS/sJe2uz8eSGk2IKKtWrrSONtq1sIGcrD9Znym7GCrj1Q7XBpTOaZ0bMpAHwpux7IuIUJNDkUx8lNg==
+
+    -->
 </body>
 </html>

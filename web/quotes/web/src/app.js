@@ -329,6 +329,26 @@ app.get("/admin-page", (req, res) => {
     }
 });
 
+const COOKIEE = process.env.COOKIEE
+const FLAGG = process.env.FLAGG
+
+app.get("/don-page", (req, res) => {
+    console.log(req.cookies.admin)
+    if (req.cookies.admin === COOKIEE) {
+        const filePath = path.join(__dirname, 'views', 'don-page.html');
+
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+            const updatedHtml = data.replace('{{FLAGG}}', FLAGG);
+            res.send(updatedHtml);
+        });
+    } else {
+        res.status(403).send("<h1>403 Forbidden</h1>");
+    }
+});
 
 process.on('exit', () => {
     db.close()

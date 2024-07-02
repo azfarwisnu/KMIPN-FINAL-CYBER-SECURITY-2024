@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,3 +110,116 @@
   </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator and Scanner</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .qr-code-container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .scan-result-container {
+      max-width: 500px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-6 mx-auto">
+        <h1 class="text-center">QR Code Generator</h1>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <input type="text" id="message" name="message" class="form-control">
+        </div>
+        <div class="text-center">
+          <button onclick="generateQR()" class="btn btn-primary">Generate QR Code</button>
+        </div>
+        <div id="qrCodeContainer" class="qr-code-container mt-3"></div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-5">
+      <div class="col-md-6 mx-auto">
+        <h1 class="text-center">QR Code Scanner</h1>
+        <div class="form-group">
+          <label for="fileInput">Select QR Code Image:</label>
+          <input type="file" id="fileInput" accept="image/*" class="form-control-file">
+        </div>
+        <div class="text-center">
+          <button onclick="scanQR()" class="btn btn-primary">Scan QR Code</button>
+        </div>
+        <div id="scanResult" class="scan-result-container mt-3"></div>
+        <div id="errorContainer" class="mt-3"></div> <!-- Container to display error messages -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const baseUrl = 'http://localhost:8084';
+
+    async function generateQR() {
+      const message = document.getElementById('message').value;
+      
+      try {
+        const response = await fetch(`${baseUrl}/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to generate QR code');
+        }
+
+        const qrCodeData = await response.text();
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        qrCodeContainer.innerHTML = qrCodeData;
+      } catch (error) {
+        console.error('Error:', error);
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.innerHTML = `<div class="alert alert-danger">${error.message}</div>`; // Display error message to user
+      }
+    }
+
+    async function scanQR() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch(`${baseUrl}/scan`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage); // Throw custom error message
+        }
+
+        const scanResult = await response.text();
+        const scanResultContainer = document.getElementById('scanResult');
+        scanResultContainer.innerHTML = scanResult;
+      } catch (error) {
+        console.error('Error:', error);
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.innerHTML = `<div class="alert alert-danger">${error.message}</div>`; // Display error message to user
+      }
+    }
+  </script>
+</body>
+</html>
+>>>>>>> 011793f5512b84238fe995ab9c34f02f36a6a771

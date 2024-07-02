@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  crypto__pal_signer:
+    image: crypto__pal_signer
+    container_name: crypto__pal_signer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "40805:9999"
+    networks:
+      - crypto__pal_signer_network
+networks:
+  crypto__pal_signer_network:
+    driver: bridge

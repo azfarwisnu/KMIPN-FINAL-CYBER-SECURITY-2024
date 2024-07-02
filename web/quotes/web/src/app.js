@@ -39,7 +39,7 @@ db.serialize(() => {
         username TEXT, 
         password TEXT, 
         sticker TEXT DEFAULT 'stickers/defaultsticker.png',
-        about TEXT DEFAULT 'Misii puhhh!.'
+        messages TEXT DEFAULT 'Misii puhhh!.'
     )`);
 })
 
@@ -167,11 +167,16 @@ app.put("/api/quotes", (req, res) => {
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
+    const userDir = path.join(__dirname, 'public', 'stickers', req.session.username);
+    if (!fs.existsSync(userDir)) {
+        fs.mkdirSync(userDir, { recursive: true });
+    }
+
     const updateQuotes = () => {
-        if (typeof req.body.about !== 'string') {
+        if (typeof req.body.messages !== 'string') {
             return res.status(400).json({ success: false, message: "NO!" });
         }
-        db.run("UPDATE Users SET about = ? WHERE username = ?", req.body.about, req.session.username, (err) => {
+        db.run("UPDATE Users SET messages = ? WHERE username = ?", req.body.messages, req.session.username, (err) => {
             if (err) {
                 return res.status(500).json({ success: false, message: "Server error" });
             }
@@ -180,27 +185,27 @@ app.put("/api/quotes", (req, res) => {
     };
 
     const allowMimes = ['image/webp', 'image/jpeg', 'image/png', 'image/svg+xml'];
-    const allowExtentions = ['webp', 'jpeg',, 'png', 'svg'];
+    const allowExtensions = ['webp', 'jpeg', 'png', 'svg'];
 
     if (req.files && req.files.sticker) {
         const ext = req.files.sticker.name.split('.').pop();
-        if (allowMimes.indexOf(req.files.sticker.mimetype) === -1 || allowExtentions.indexOf(ext) === -1) {
-            return res.status(400).json({ success: false, message: "Only WEBP, JPG, JPEG, GIF, PNG, SVG" });
+        if (allowMimes.indexOf(req.files.sticker.mimetype) === -1 || allowExtensions.indexOf(ext) === -1) {
+            return res.status(400).json({ success: false, message: "Only WEBP, JPEG, PNG, SVG" });
         }
 
         const filename = req.files.sticker.md5 + '.' + ext;
-        req.files.sticker.mv(`public/stickers/${filename}`, (err) => {
+        const filePath = path.join(userDir, filename);
+        req.files.sticker.mv(filePath, (err) => {
             if (err) {
                 return res.status(500).json({ success: false, message: "cannot move sticker to public dir" });
             }
 
             if (ext === 'svg') {
-                fs.readFile(`public/stickers/${filename}`, 'utf8', (err, data) => {
+                fs.readFile(filePath, 'utf8', (err, data) => {
                     if (err) {
                         return res.status(500).json({ success: false, message: "Server Error: cannot read SVG file" });
                     }
                     let sanitizedSVG = data;
-                    console.log(sanitizedSVG)
 
                     if (!sanitizedSVG.startsWith('<svg')) {
                         return res.status(400).json({ success: false, message: "Invalid SVG content." });
@@ -212,22 +217,16 @@ app.put("/api/quotes", (req, res) => {
                     const svgMatch = sanitizedSVG.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
                     if (svgMatch && svgMatch[1]) {
                         const innerSvg = svgMatch[1];
-                        console.log(innerSvg);
                         let sanitizedContent = sanitizeSvgContent(innerSvg);
-                        console.log(sanitizedContent)
-                    contentclear=sanitizedContent}
-
-                    const svgCloseTagIndex = sanitizedSVG.lastIndexOf('</svg>');
-                    if (svgCloseTagIndex !== -1) {
-                        sanitizedSVG = sanitizedSVG.slice(0, svgCloseTagIndex) + contentclear + sanitizedSVG.slice(svgCloseTagIndex);
+                        sanitizedSVG = sanitizedSVG.slice(0, sanitizedSVG.indexOf(innerSvg)) + sanitizedContent + sanitizedSVG.slice(sanitizedSVG.indexOf(innerSvg) + innerSvg.length);
                     }
-                    console.log(sanitizedSVG)
-                    fs.writeFile(`public/stickers/${filename}`, sanitizedSVG, (err) => {
+
+                    fs.writeFile(filePath, sanitizedSVG, (err) => {
                         if (err) {
-                            return res.status(500).json({ success: false, message: "Server Error: cannot write sanitized SVG file" });
+                            return res.status(500).json({ success: false, message: "Error" });
                         }
 
-                        db.run("UPDATE Users SET sticker = ? WHERE username = ?", `stickers/${filename}`, req.session.username, (err) => {
+                        db.run("UPDATE Users SET sticker = ? WHERE username = ?", path.join('stickers', req.session.username, filename), req.session.username, (err) => {
                             if (err) {
                                 return res.status(500).json({ success: false, message: "Server Error: cannot update sticker path" });
                             }
@@ -236,7 +235,7 @@ app.put("/api/quotes", (req, res) => {
                     });
                 });
             } else {
-                db.run("UPDATE Users SET sticker = ? WHERE username = ?", `stickers/${filename}`, req.session.username, (err) => {
+                db.run("UPDATE Users SET sticker = ? WHERE username = ?", path.join('stickers', req.session.username, filename), req.session.username, (err) => {
                     if (err) {
                         return res.status(500).json({ success: false, message: "Server Error: cannot update sticker path" });
                     }
@@ -249,6 +248,7 @@ app.put("/api/quotes", (req, res) => {
     }
 });
 
+
 app.get("/preview", (req, res) => {
     res.render("preview", { nonce: res.nonce })
 })
@@ -256,18 +256,13 @@ app.get("/preview", (req, res) => {
 app.get("/api/preview", (req, res) => {
     if (req.query.username === undefined || typeof req.query.username !== 'string')
         return res.status(400).json({ success: false, message: "NO!" })
-    db.get("SELECT username, about, sticker FROM Users WHERE username = ?", req.query.username, (err, row) => {
+    db.get("SELECT username, messages, sticker FROM Users WHERE username = ?", req.query.username, (err, row) => {
         if (err)
             return res.status(500).json({ success: false, message: "Server Error" })
         if (!row)
             return res.status(404).json({ success: false, message: "Not found" })
         return res.json({ success: true, data: row })
     })
-})
-
-app.post("/api/logout", (req, res) => {
-    req.session.destroy()
-    res.json({ success: true })
 })
 
 app.post("/api/report", recaptcha.middleware.verify, (req, res) => {

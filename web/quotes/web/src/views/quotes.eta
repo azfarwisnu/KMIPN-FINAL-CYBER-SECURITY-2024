@@ -4,7 +4,7 @@
 <head>
     <title>Edit quotes</title>
     <script src="https://www.google.com/recaptcha/api.js?trustedtypes=true" async defer></script>
-    <%~ includeFile('dess/head', it) %>
+    <%~ includeFile('dess/heading', it) %>
     <style>
         body {
             background-image: url('stickers/background.png');
@@ -52,24 +52,22 @@
         <div class="row mb-5 justify-content-center">
             <div class="col-sm-9">
                 <h3 class="mt-3">Kata katanya hari ini bang <span id="username">User</span></h3>
-                <textarea name="" id="about" class="form-control" rows="10"></textarea>
+                <textarea name="" id="messages" class="form-control" rows="10"></textarea>
             </div>
         </div>
         <div id="sticker-container">
             <h3 class="mb-3 mt-3">Sticker</h3>
             <img src="stickers/defaultsticker.png" class="img-fluid circular-sticker" id="sticker">
             <div class="mt-3 mb-3">
-                <label class="form-label" for="stickerFile">Upload sticker</label>
                 <input type="file" class="form-control" id="stickerFile">
             </div>
         </div>
 
         <div class="container">
-            <button type="submit" class="btn btn-primary mb-2" id="save">Save</button>
-            <button type="submit" class="btn btn-primary mb-2" id="logout">Logout</button>
             <button type="submit" class="btn btn-primary mb-2" id="preview">Preview</button>
+            <button type="submit" class="btn btn-primary mb-2" id="drop">Drop</button>
             <button type="submit" class="btn btn-primary mb-2" id="report">Send your quotes with anothers</button>
-            <div class="g-recaptcha" data-sitekey="<%= it.RECAPTCHA_SITE_KEY %>" data-callback="onReport"
+            <div class="g-recaptcha" data-sitekey="<%= it.RECAPTCHA_SITE_KEY %>" data-callback="sending"
                 data-size="invisible"></div>
         </div>
     </div>
@@ -81,7 +79,7 @@
                 .then(data => {
                     if (data.success) {
                         username.innerText = data.data.username
-                        about.value = data.data.about
+                        messages.value = data.data.messages
                         sticker.src = data.data.sticker
                     } else {
                         alert(data.message)
@@ -95,9 +93,9 @@
                 sticker.src = URL.createObjectURL(file)
             }
         })
-        save.addEventListener('click', () => {
+        drop.addEventListener('click', () => {
             const formData = new FormData()
-            formData.append('about', about.value)
+            formData.append('messages', messages.value)
             if (stickerFile.files.length > 0)
                 formData.append('sticker', stickerFile.files[0])
             fetch('/api/quotes', {
@@ -106,13 +104,13 @@
             })
                 .then(res => {
                     if (res.status === 413)
-                        return { success: false, message: 'File too large' }
+                        return { success: false, message: 'Over' }
                     return res.json()
                 })
                 .then(data => {
                     if (data.success) {
                         init()
-                        alert('Saved!')
+                        alert('Ok')
                     } else
                         alert(data.message)
                 })
@@ -120,7 +118,7 @@
         preview.addEventListener('click', () => {
             location = `/preview?username=${username.innerText}`
         })
-        function onReport(token) {
+        function sending(token) {
             const url = new URL(`/preview?username=${username.innerText}`, location)
             fetch('/api/report', {
                 method: 'POST',
@@ -132,7 +130,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success)
-                        alert('Request sent!')
+                        alert('Ok, Sending')
                     else
                         alert(data.message)
                     grecaptcha.reset();
@@ -140,18 +138,6 @@
         }
         report.addEventListener('click', () => {
             grecaptcha.execute()
-        })
-        logout.addEventListener('click', () => {
-            fetch('/api/logout', {
-                method: 'POST'
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success)
-                        location = '/'
-                    else
-                        alert(data.message)
-                })
         })
     </script>
 

@@ -3,7 +3,7 @@
 
 <head>
    <title>Preview</title>
-   <%~ includeFile('dess/head', it) %>
+   <%~ includeFile('dess/heading', it) %>
    <style>
        body {
          background-repeat: no-repeat;
@@ -51,7 +51,7 @@
         <div class="row mb-5 justify-content-center">
             <div class="col-sm-9">
                 <h3 class="mb-3 mt-3">Kata katanya hari ini bang <span id="username">User</span></h3>
-                <div id="about"></div>
+                <div id="messages"></div>
             </div>
         </div>
         <div id="sticker-container">
@@ -65,7 +65,7 @@
                 .then(data => {
                     if (data.success) {
                         username.innerHTML = DOMPurify.sanitize(data.data.username)
-                        about.innerHTML = DOMPurify.sanitize(data.data.about)
+                        messages.innerHTML = DOMPurify.sanitize(data.data.messages)
                         sticker.src = data.data.sticker
                     } else {
                         alert(data.message)

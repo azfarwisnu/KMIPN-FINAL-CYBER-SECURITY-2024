@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <title>Login / Register</title>
-    <%~ includeFile('dess/head', it) %>
+    <title>Log-In</title>
+    <%~ includeFile('dess/heading', it) %>
     <style>
         body {
             background-image: url('stickers/background.png');
@@ -24,7 +24,7 @@
 <body>
     <div class="container mt-5 border rounded" style="width: 25rem;">
         <div class="p-3">
-            <h2 class="mb-4 mt-3">Login / Register</h2>
+            <h2 class="mb-4 mt-3">Log-In</h2>
             <div class="form-group mb-3">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" class="form-control" autofocus>
